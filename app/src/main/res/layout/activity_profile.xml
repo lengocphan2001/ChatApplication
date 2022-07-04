@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".Profile"
+    android:layout_marginTop="100dp">
+    <ImageView
+        android:id="@+id/proFileImage"
+        android:layout_width="200dp"
+        android:layout_height="200dp"
+        android:background="@drawable/round_back_light"
+        android:src="@drawable/img"
+        android:layout_centerHorizontal="true"/>
+    <Button
+        android:id="@+id/btnUploadPhoto"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Upload Photo"
+        android:background="@drawable/backgroundbutton"
+        android:textAllCaps="false"
+        android:padding="20dp"
+        android:layout_marginTop="30dp"
+        android:layout_below="@id/proFileImage"
+        android:layout_centerHorizontal="true"/>
+    <Button
+        android:id="@+id/btnLogOut"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Log Out"
+        android:textAllCaps="false"
+        android:layout_marginTop="30dp"
+        android:padding="20dp"
+        android:background="@drawable/backgroundbutton"
+        android:layout_below="@id/btnUploadPhoto"
+        android:layout_centerHorizontal="true"/>
+
+</RelativeLayout>

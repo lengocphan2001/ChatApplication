@@ -1,0 +1,104 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".LoginActivity">
+
+    <RelativeLayout
+        android:id="@+id/headerLogin"
+        android:layout_width="match_parent"
+        android:layout_height="250dp"
+        android:background="@color/blue">
+
+        <ImageView
+            android:id="@+id/logoApp"
+            android:layout_width="100dp"
+            android:layout_height="100dp"
+            android:src="@drawable/logo_chat"
+            android:layout_centerInParent="true"/>
+        <TextView
+            android:id="@+id/sloganApp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Bạn bè muôn nơi"
+            android:layout_below="@id/logoApp"
+            android:layout_centerInParent="true"
+            android:fontFamily="@font/medium"
+            android:layout_marginTop="10dp"
+            android:textSize="13sp"/>
+    </RelativeLayout>
+    <TextView
+        android:id="@+id/txtSignIn"
+        android:layout_below="@id/headerLogin"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        android:text="Đăng nhập"
+        android:layout_centerInParent="true"
+        android:fontFamily="@font/medium"
+        android:textSize="20sp"/>
+    <RelativeLayout
+        android:id="@+id/contentApp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/txtSignIn"
+        android:layout_marginTop="30dp"
+        android:layout_centerInParent="true">
+
+        <EditText
+            android:id="@+id/edtEmail"
+            android:layout_width="320dp"
+            android:layout_height="wrap_content"
+            android:background="@drawable/backgroundeditext"
+            android:fontFamily="@font/regular"
+            android:hint="Email" />
+        <EditText
+            android:id="@+id/edtPassword"
+            android:layout_below="@id/edtEmail"
+            android:layout_width="320dp"
+            android:layout_height="wrap_content"
+            android:background="@drawable/backgroundeditext"
+            android:fontFamily="@font/regular"
+            android:layout_marginTop="20dp"
+            android:inputType="textPassword"
+            android:hint="Mật khẩu"/>
+    </RelativeLayout>
+    <Button
+        android:id="@+id/btnSignIn"
+        android:layout_below="@id/contentApp"
+        android:layout_width="300dp"
+        android:layout_height="60dp"
+        android:layout_marginTop="20dp"
+        android:text="Đăng nhập"
+        android:textColor="@color/white"
+        android:fontFamily="@font/medium"
+        android:textAllCaps="false"
+        android:layout_centerInParent="true"
+        android:background="@drawable/backgroundbutton"/>
+    <TextView
+        android:id="@+id/txtSigUp"
+        android:layout_below="@id/btnSignIn"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        android:textSize="18sp"
+        android:fontFamily="@font/regular"
+        android:text="Bạn chưa có tài khoản?   "
+        android:layout_marginStart="50dp"/>
+    <TextView
+        android:id="@+id/txtLinkSignUp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Đăng ký"
+        android:fontFamily="@font/regular"
+        android:textColor="@color/blue"
+        android:autoLink="web"
+        android:layout_marginTop="20dp"
+        android:textSize="18sp"
+        android:layout_below="@id/btnSignIn"
+        android:layout_toEndOf="@id/txtSigUp"
+        android:linksClickable="true"/>
+
+</RelativeLayout>

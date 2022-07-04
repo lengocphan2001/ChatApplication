@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "1037335073531",
+    "firebase_url": "https://baitaplon-cce01-default-rtdb.firebaseio.com",
+    "project_id": "baitaplon-cce01",
+    "storage_bucket": "baitaplon-cce01.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1037335073531:android:7b506811726bbc736a165e",
+        "android_client_info": {
+          "package_name": "com.example.chatapplication"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "1037335073531-cgte471f0puh0tbk3kkpr10r8dfal9j5.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyApWU3auVTwOFIJYz6mmvG3DHpDPXui37g"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "1037335073531-cgte471f0puh0tbk3kkpr10r8dfal9j5.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
