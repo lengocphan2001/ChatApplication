@@ -110,7 +110,7 @@ public class ChatRoom extends AppCompatActivity {
             }
         });
         readMessage();
-
+        // Tooi laf Le Ngoc Phan
     }
 
     private void readMessage() {
