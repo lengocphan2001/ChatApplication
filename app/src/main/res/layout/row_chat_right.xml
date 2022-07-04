@@ -35,7 +35,7 @@
             android:layout_height="wrap_content"
             android:layout_below="@id/txtChatMessage"
             android:layout_alignParentEnd="true"
-            android:fontFamily="@font/nunito_black"
+            android:fontFamily="@font/nunito_italic"
             android:text="04/07/2022 16:49PM"
             android:textSize="15sp" />
     </RelativeLayout>

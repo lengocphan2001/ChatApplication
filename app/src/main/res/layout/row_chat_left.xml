@@ -28,15 +28,16 @@
             android:textColor="@color/white"
             android:padding="9dp"
             android:text="His messages"/>
+
         <TextView
             android:id="@+id/txtTime"
-            android:layout_below="@id/txtChatMessage"
-            android:fontFamily="@font/nunito_black"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_below="@id/txtChatMessage"
             android:layout_centerVertical="true"
-            android:textSize="15sp"
-            android:text="04/07/2022 16:49PM"/>
+            android:fontFamily="@font/nunito_italic"
+            android:text="04/07/2022 16:49PM"
+            android:textSize="15sp" />
     </RelativeLayout>
 
 </LinearLayout>

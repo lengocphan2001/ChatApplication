@@ -1,6 +1,9 @@
 package com.example.chatapplication.chat;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
+import android.icu.text.SimpleDateFormat;
+import android.os.Build;
 import android.text.format.DateFormat;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -8,6 +11,7 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.RequiresApi;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.chatapplication.R;
@@ -17,6 +21,7 @@ import com.google.firebase.auth.FirebaseUser;
 import com.squareup.picasso.Picasso;
 
 import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 import java.util.Locale;
 
@@ -47,15 +52,18 @@ public class ChatAdapter extends RecyclerView.Adapter<ChatAdapter.MyHolder>{
         return new MyHolder(view);
     }
 
+    @RequiresApi(api = Build.VERSION_CODES.N)
     @Override
     public void onBindViewHolder(@NonNull MyHolder holder, int position) {
         String message = modelChatList.get(position).getMessage();
         String time = modelChatList.get(position).getTime();
-//        Calendar cld = Calendar.getInstance(Locale.ENGLISH);
-//        cld.setTimeInMillis(Long.parseLong(time));
-//        String datetime = DateFormat.format("dd/MM/yyyy hh:mm aa", cld).toString();
+        Calendar calendar = Calendar.getInstance();
+        String dateFormat = "dd-MM-yyyy hh:mm";
+        @SuppressLint("SimpleDateFormat") SimpleDateFormat simpleDateFormat = new SimpleDateFormat(dateFormat);
+        calendar.setTimeInMillis(Long.parseLong(time));
+        String timeStamp = simpleDateFormat.format(calendar.getTime());
         holder.message.setText(message);
-        holder.time.setText(time);
+        holder.time.setText(timeStamp);
         try{
             Picasso.get().load(imageURL).into(holder.imgProfileChat);
         }catch (Exception e){

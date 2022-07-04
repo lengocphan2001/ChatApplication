@@ -47,6 +47,7 @@ public class ChatActivity extends AppCompatActivity {
         mAuth = FirebaseAuth.getInstance();
         txtUserName = findViewById(R.id.txtMessages);
         imgUser = findViewById(R.id.imgUser);
+        messageDisplay = findViewById(R.id.recyclerMessages);
         imgUser.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
