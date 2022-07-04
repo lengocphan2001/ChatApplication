@@ -6,6 +6,8 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
+import android.util.Pair;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ListView;
@@ -14,6 +16,7 @@ import android.widget.TextView;
 import com.example.chatapplication.chat.ChatAdapter;
 import com.example.chatapplication.message.MessagesAdapter;
 import com.example.chatapplication.message.MessagesList;
+import com.example.chatapplication.model.ModelChat;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
@@ -24,6 +27,8 @@ import com.google.firebase.database.ValueEventListener;
 import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Objects;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 
@@ -63,13 +68,34 @@ public class ChatActivity extends AppCompatActivity {
                     String image = snapshot.child("imgProfile").getValue(String.class);
                     Picasso.get().load(image).into(imgUser);
                 }
+                @Override
+                public void onCancelled(@NonNull DatabaseError error) {
+
+                }
+            });
+            HashMap<Pair<String, String>, String> storeLastMessage = new HashMap<>();
+            DatabaseReference dbRef = FirebaseDatabase.getInstance().getReference("Chats");
+            dbRef.addValueEventListener(new ValueEventListener() {
+                @SuppressLint("NotifyDataSetChanged")
+                @Override
+                public void onDataChange(@NonNull DataSnapshot snapshot) {
+                    storeLastMessage.clear();
+                    String email = firebaseUser.getEmail();
+                    for (DataSnapshot ds: snapshot.getChildren()){
+                        ModelChat modelChat = ds.getValue(ModelChat.class);
+                        assert (modelChat != null);
+                        String receiverEmail = modelChat.getReceiver();
+                        Log.i("name", receiverEmail);
+                        storeLastMessage.put(new Pair<String, String>(email, receiverEmail), modelChat.getMessage());
+                    }
+                }
 
                 @Override
                 public void onCancelled(@NonNull DatabaseError error) {
 
                 }
             });
-
+            Log.i("number of last message", String.valueOf(storeLastMessage.size()));
             txtUserName.setText(firebaseUser.getDisplayName());
             messageDisplay = findViewById(R.id.recyclerMessages);
             databaseReference.addValueEventListener(new ValueEventListener() {
@@ -83,7 +109,10 @@ public class ChatActivity extends AppCompatActivity {
                             String emailRoommate = dataSnapshot.child("email").getValue(String.class);
                             String getName = dataSnapshot.child("userName").getValue(String.class);
                             String getProFilePic = dataSnapshot.child("imgProfile").getValue(String.class);
-                            MessagesList messagesList = new MessagesList(emailRoommate, getName, "", getProFilePic, 0);
+                            String lastMess = "Chưa có tin nhắn";
+                            if (storeLastMessage.containsKey(new Pair<String, String>(email, emailRoommate)))
+                                lastMess = storeLastMessage.get(new Pair<String, String>(email, emailRoommate));
+                            MessagesList messagesList = new MessagesList(emailRoommate, getName, lastMess, getProFilePic, 0);
                             messagesListLists.add(messagesList);
                         }
                     }
@@ -95,6 +124,7 @@ public class ChatActivity extends AppCompatActivity {
 
                 }
             });
+
             messageDisplay.setOnItemClickListener(new AdapterView.OnItemClickListener() {
                 @Override
                 public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
@@ -109,6 +139,8 @@ public class ChatActivity extends AppCompatActivity {
                     startActivity(a);
                 }
             });
+
+
         }
     }
 

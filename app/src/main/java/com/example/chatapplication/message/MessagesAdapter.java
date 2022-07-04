@@ -55,7 +55,7 @@ public class MessagesAdapter extends BaseAdapter {
         TextView txtLastMessage = v.findViewById(R.id.txtLastMessage);
         MessagesList item = (MessagesList) getItem(position);
         txtUserName.setText(item.getName());
-        txtLastMessage.setText("Chưa nhắn gì nha bạn");
+        txtLastMessage.setText(item.getLassMessage());
         Picasso.get().load(item.getProfilePic()).into(circleImageView);
         return v;
     }
