@@ -34,17 +34,17 @@ import de.hdodenhof.circleimageview.CircleImageView;
 
 public class ChatActivity extends AppCompatActivity {
     ArrayList<MessagesList> messagesListLists = new ArrayList<>();
-    FirebaseAuth mAuth;
+    FirebaseAuth mAuth = FirebaseAuth.getInstance();;
     CircleImageView imgUser;
     TextView txtUserName;
     ListView messageDisplay;
+    FirebaseUser firebaseUser = mAuth.getCurrentUser();
     DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference();
     @SuppressLint({"SetTextI18n", "CutPasteId"})
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_chat);
-        mAuth = FirebaseAuth.getInstance();
         txtUserName = findViewById(R.id.txtMessages);
         imgUser = findViewById(R.id.imgUser);
         messageDisplay = findViewById(R.id.recyclerMessages);
@@ -55,7 +55,6 @@ public class ChatActivity extends AppCompatActivity {
                 startActivity(intent);
             }
         });
-        FirebaseUser firebaseUser = mAuth.getCurrentUser();
         if (firebaseUser == null){
             Intent signIn = new Intent(ChatActivity.this, LoginActivity.class);
             startActivity(signIn);
@@ -84,51 +83,24 @@ public class ChatActivity extends AppCompatActivity {
                 public void onDataChange(@NonNull DataSnapshot snapshot) {
                     storeLastMessage.clear();
                     String email = firebaseUser.getEmail();
-                    for (DataSnapshot ds: snapshot.getChildren()){
+                    for (DataSnapshot ds: snapshot.getChildren()) {
                         ModelChat modelChat = ds.getValue(ModelChat.class);
                         assert (modelChat != null);
                         String receiverEmail = modelChat.getReceiver();
-                        Log.i("name", receiverEmail);
-                        if (modelChat.getSender().equals(email) || modelChat.getReceiver().equals(email))
+                        if (modelChat.getSender().equals(email))
                             storeLastMessage.put(new Pair<String, String>(email, receiverEmail), modelChat.getMessage());
+                        if (modelChat.getReceiver().equals(email))
+                            storeLastMessage.put(new Pair<String, String>(email, modelChat.getSender()), modelChat.getMessage());
                     }
                 }
-                // le ngoc phan
                 @Override
                 public void onCancelled(@NonNull DatabaseError error) {
 
                 }
             });
-            Log.i("number of last message", String.valueOf(storeLastMessage.size()));
             txtUserName.setText(firebaseUser.getDisplayName());
             messageDisplay = findViewById(R.id.recyclerMessages);
-            databaseReference.addValueEventListener(new ValueEventListener() {
-                @Override
-                public void onDataChange(@NonNull DataSnapshot snapshot) {
-                    messagesListLists.clear();
-                    String email = firebaseUser.getEmail();
-                    for (DataSnapshot dataSnapshot : snapshot.child("Users").getChildren()) {
-                        assert email != null;
-                        if (!email.equals(dataSnapshot.child("email").getValue(String.class))) {
-                            String emailRoommate = dataSnapshot.child("email").getValue(String.class);
-                            String getName = dataSnapshot.child("userName").getValue(String.class);
-                            String getProFilePic = dataSnapshot.child("imgProfile").getValue(String.class);
-                            String lastMess = "Chưa có tin nhắn";
-                            if (storeLastMessage.containsKey(new Pair<String, String>(email, emailRoommate)))
-                                lastMess = storeLastMessage.get(new Pair<String, String>(email, emailRoommate));
-                            MessagesList messagesList = new MessagesList(emailRoommate, getName, lastMess, getProFilePic, 0);
-                            messagesListLists.add(messagesList);
-                        }
-                    }
-                    messageDisplay.setAdapter(new MessagesAdapter(messagesListLists, ChatActivity.this));
-                }
-
-                @Override
-                public void onCancelled(@NonNull DatabaseError error) {
-
-                }
-            });
-
+            updateUI(storeLastMessage);
             messageDisplay.setOnItemClickListener(new AdapterView.OnItemClickListener() {
                 @Override
                 public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
@@ -143,9 +115,38 @@ public class ChatActivity extends AppCompatActivity {
                     startActivity(a);
                 }
             });
-
-
         }
+    }
+
+    public void updateUI(HashMap<Pair<String, String>, String> storeLastMessage){
+        databaseReference.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                messagesListLists.clear();
+                String email = firebaseUser.getEmail();
+                for (DataSnapshot dataSnapshot : snapshot.child("Users").getChildren()) {
+                    assert email != null;
+                    if (!email.equals(dataSnapshot.child("email").getValue(String.class))) {
+                        String emailRoommate = dataSnapshot.child("email").getValue(String.class);
+                        String getName = dataSnapshot.child("userName").getValue(String.class);
+                        String getProFilePic = dataSnapshot.child("imgProfile").getValue(String.class);
+                        String lastMess = "Chưa có tin nhắn";
+                        if (storeLastMessage.containsKey(new Pair<String, String>(email, emailRoommate)))
+                            lastMess = storeLastMessage.get(new Pair<String, String>(email, emailRoommate));
+                        if (storeLastMessage.containsKey(new Pair<String, String>(emailRoommate, email)))
+                            lastMess = storeLastMessage.get(new Pair<String, String>(emailRoommate, email));
+                        MessagesList messagesList = new MessagesList(emailRoommate, getName, lastMess, getProFilePic, 0);
+                        messagesListLists.add(messagesList);
+                    }
+                }
+                messageDisplay.setAdapter(new MessagesAdapter(messagesListLists, ChatActivity.this));
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        });
     }
 
     @Override
