@@ -40,10 +40,13 @@
             android:src="@drawable/img" />
     </RelativeLayout>
     <ListView
+        android:padding="10dp"
         android:id="@+id/recyclerMessages"
         android:layout_below="@id/layoutMainContent"
+        android:dividerHeight="1dp"
         android:layout_marginTop="20dp"
         android:layout_width="match_parent"
+        android:divider="#ABC1D3"
         android:layout_height="match_parent">
 
     </ListView>
