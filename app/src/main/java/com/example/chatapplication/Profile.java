@@ -36,7 +36,7 @@ import java.util.Objects;
 import java.util.UUID;
 
 public class Profile extends AppCompatActivity implements View.OnClickListener {
-    Button btnUpLoad, logOut;
+    Button btnUpLoad, logOut, changePassword;
     ImageView imgUser;
     FirebaseAuth mAuth;
     Uri imagePath;
@@ -47,10 +47,12 @@ public class Profile extends AppCompatActivity implements View.OnClickListener {
         mAuth = FirebaseAuth.getInstance();
         imgUser = findViewById(R.id.proFileImage);
         btnUpLoad = findViewById(R.id.btnUploadPhoto);
+        changePassword = findViewById(R.id.btnChangePassword);
         logOut = findViewById(R.id.btnLogOut);
         btnUpLoad.setOnClickListener(this);
         logOut.setOnClickListener(this);
         imgUser.setOnClickListener(this);
+        changePassword.setOnClickListener(this);
     }
 
     @SuppressLint("NonConstantResourceId")
@@ -71,6 +73,11 @@ public class Profile extends AppCompatActivity implements View.OnClickListener {
                 Intent intent = new Intent(Intent.ACTION_PICK);
                 intent.setType("image/*");
                 startActivityForResult(intent, 123);
+                break;
+            }
+            case R.id.btnChangePassword:{
+                Intent intent = new Intent(Profile.this, ChangePasswordActivity.class);
+                startActivity(intent);
                 break;
             }
             default:
