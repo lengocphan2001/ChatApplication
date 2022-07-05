@@ -67,7 +67,9 @@ public class ChatActivity extends AppCompatActivity {
                     String name = snapshot.child("userName").getValue(String.class);
                     txtUserName.setText(name);
                     String image = snapshot.child("imgProfile").getValue(String.class);
-                    Picasso.get().load(image).into(imgUser);
+                    assert image != null;
+                    if (!image.equals("@drawable/img"))
+                        Picasso.get().load(image).into(imgUser);
                 }
                 @Override
                 public void onCancelled(@NonNull DatabaseError error) {
@@ -87,10 +89,11 @@ public class ChatActivity extends AppCompatActivity {
                         assert (modelChat != null);
                         String receiverEmail = modelChat.getReceiver();
                         Log.i("name", receiverEmail);
-                        storeLastMessage.put(new Pair<String, String>(email, receiverEmail), modelChat.getMessage());
+                        if (modelChat.getSender().equals(email) || modelChat.getReceiver().equals(email))
+                            storeLastMessage.put(new Pair<String, String>(email, receiverEmail), modelChat.getMessage());
                     }
                 }
-
+                // le ngoc phan
                 @Override
                 public void onCancelled(@NonNull DatabaseError error) {
 

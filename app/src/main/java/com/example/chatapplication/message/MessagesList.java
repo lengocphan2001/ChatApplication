@@ -1,6 +1,6 @@
 package com.example.chatapplication.message;
 
-public class MessagesList {
+public class MessagesList{
     private String name, lassMessage, profilePic, email;
     private int unseenMessages;
     public MessagesList(String email, String name, String lassMessage, String profilePic, int unseenMessages) {
@@ -50,4 +50,5 @@ public class MessagesList {
     public void setEmail(String email) {
         this.email = email;
     }
+
 }
