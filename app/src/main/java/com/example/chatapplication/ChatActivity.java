@@ -3,7 +3,6 @@ package com.example.chatapplication;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.NotificationCompat;
-
 import android.annotation.SuppressLint;
 import android.app.NotificationManager;
 import android.content.Intent;
@@ -30,8 +29,9 @@ import com.google.firebase.database.ValueEventListener;
 import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.HashMap;
-import java.util.Objects;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 
@@ -79,6 +79,7 @@ public class ChatActivity extends AppCompatActivity {
                 }
             });
             HashMap<Pair<String, String>, String> storeLastMessage = new HashMap<>();
+            HashMap<Pair<String, String>, String> timeLastMess = new HashMap<>();
             DatabaseReference dbRef = FirebaseDatabase.getInstance().getReference("Chats");
             dbRef.addValueEventListener(new ValueEventListener() {
                 @SuppressLint("NotifyDataSetChanged")
@@ -90,10 +91,14 @@ public class ChatActivity extends AppCompatActivity {
                         ModelChat modelChat = ds.getValue(ModelChat.class);
                         assert (modelChat != null);
                         String receiverEmail = modelChat.getReceiver();
-                        if (modelChat.getSender().equals(email))
+                        if (modelChat.getSender().equals(email)) {
                             storeLastMessage.put(new Pair<String, String>(email, receiverEmail), modelChat.getMessage());
-                        if (modelChat.getReceiver().equals(email))
+                            timeLastMess.put(new Pair<String, String>(email, receiverEmail), modelChat.getTime());
+                        }
+                        if (modelChat.getReceiver().equals(email)) {
                             storeLastMessage.put(new Pair<String, String>(email, modelChat.getSender()), modelChat.getMessage());
+                            timeLastMess.put(new Pair<String, String>(email, modelChat.getSender()), modelChat.getTime());
+                        }
                     }
                 }
                 @Override
@@ -103,7 +108,7 @@ public class ChatActivity extends AppCompatActivity {
             });
             txtUserName.setText(firebaseUser.getDisplayName());
             messageDisplay = findViewById(R.id.recyclerMessages);
-            updateUI(storeLastMessage);
+            updateUI(storeLastMessage, timeLastMess);
             messageDisplay.setOnItemClickListener(new AdapterView.OnItemClickListener() {
                 @Override
                 public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
@@ -127,7 +132,7 @@ public class ChatActivity extends AppCompatActivity {
 //                .bigText("Much longer text that cannot fit one line..."))
 //        .setPriority(NotificationCompat.PRIORITY_DEFAULT);
     }
-    public void updateUI(HashMap<Pair<String, String>, String> storeLastMessage){
+    public void updateUI(HashMap<Pair<String, String>, String> storeLastMessage, HashMap<Pair<String, String>, String> timeLastMess){
         databaseReference.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
@@ -139,15 +144,27 @@ public class ChatActivity extends AppCompatActivity {
                         String emailRoommate = dataSnapshot.child("email").getValue(String.class);
                         String getName = dataSnapshot.child("userName").getValue(String.class);
                         String getProFilePic = dataSnapshot.child("imgProfile").getValue(String.class);
-                        String lastMess = "Chưa có tin nhắn";
-                        if (storeLastMessage.containsKey(new Pair<String, String>(email, emailRoommate)))
+                        String lastMess = "Chưa có tin nhắn nào";
+                        String timeStamp = "";
+                        if (storeLastMessage.containsKey(new Pair<String, String>(email, emailRoommate))) {
                             lastMess = storeLastMessage.get(new Pair<String, String>(email, emailRoommate));
-                        if (storeLastMessage.containsKey(new Pair<String, String>(emailRoommate, email)))
+                            timeStamp = timeLastMess.get(new Pair<String, String>(email, emailRoommate));
+                        }
+                        if (storeLastMessage.containsKey(new Pair<String, String>(emailRoommate, email))) {
                             lastMess = storeLastMessage.get(new Pair<String, String>(emailRoommate, email));
-                        MessagesList messagesList = new MessagesList(emailRoommate, getName, lastMess, getProFilePic, 0);
+                            timeStamp = timeLastMess.get(new Pair<String, String>(emailRoommate, email));
+                        }
+                        MessagesList messagesList = new MessagesList(emailRoommate, getName, lastMess, getProFilePic, timeStamp);
                         messagesListLists.add(messagesList);
                     }
                 }
+//                Collections.sort(messagesListLists, new Comparator<MessagesList>(){
+//                    public int compare(MessagesList s1, MessagesList s2) {
+//                        if (s1 != null && s2 != null)
+//                            return s1.getTime().compareToIgnoreCase(s2.getTime());
+//                        else return -1;
+//                    }
+//                });
                 messageDisplay.setAdapter(new MessagesAdapter(messagesListLists, ChatActivity.this));
             }
 

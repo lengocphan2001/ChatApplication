@@ -1,14 +1,15 @@
 package com.example.chatapplication.message;
 
+import java.util.Comparator;
+
 public class MessagesList{
-    private String name, lassMessage, profilePic, email;
-    private int unseenMessages;
-    public MessagesList(String email, String name, String lassMessage, String profilePic, int unseenMessages) {
+    private String name, lassMessage, profilePic, email, time;
+    public MessagesList(String email, String name, String lassMessage, String profilePic, String time) {
         this.email = email;
         this.name = name;
         this.lassMessage = lassMessage;
         this.profilePic = profilePic;
-        this.unseenMessages = unseenMessages;
+        this.time = time;
     }
 
     public String getName() {
@@ -19,9 +20,6 @@ public class MessagesList{
         return lassMessage;
     }
 
-    public int getUnseenMessages() {
-        return unseenMessages;
-    }
 
     public void setName(String name) {
         this.name = name;
@@ -29,10 +27,6 @@ public class MessagesList{
 
     public void setLassMessage(String lassMessage) {
         this.lassMessage = lassMessage;
-    }
-
-    public void setUnseenMessages(int unseenMessages) {
-        this.unseenMessages = unseenMessages;
     }
 
     public String getProfilePic() {
@@ -51,4 +45,11 @@ public class MessagesList{
         this.email = email;
     }
 
+    public String getTime() {
+        return time;
+    }
+
+    public void setTime(String time) {
+        this.time = time;
+    }
 }
