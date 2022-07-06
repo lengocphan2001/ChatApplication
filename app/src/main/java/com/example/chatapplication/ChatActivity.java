@@ -2,9 +2,12 @@ package com.example.chatapplication;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.NotificationCompat;
 
 import android.annotation.SuppressLint;
+import android.app.NotificationManager;
 import android.content.Intent;
+import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
 import android.util.Pair;
@@ -116,8 +119,14 @@ public class ChatActivity extends AppCompatActivity {
                 }
             });
         }
+//        NotificationCompat.Builder mBuilder = new NotificationCompat.Builder(this, CHANNEL_ID)
+//        .setSmallIcon(R.drawable.notification_icon)
+//        .setContentTitle("My notification")
+//        .setContentText("Much longer text that cannot fit one line...")
+//        .setStyle(new NotificationCompat.BigTextStyle()
+//                .bigText("Much longer text that cannot fit one line..."))
+//        .setPriority(NotificationCompat.PRIORITY_DEFAULT);
     }
-
     public void updateUI(HashMap<Pair<String, String>, String> storeLastMessage){
         databaseReference.addValueEventListener(new ValueEventListener() {
             @Override
@@ -158,4 +167,23 @@ public class ChatActivity extends AppCompatActivity {
             startActivity(signIn);
         }
     }
+//    private void createNotificationChannel() {
+//        // Create the NotificationChannel, but only on API 26+ because
+//        // the NotificationChannel class is new and not in the support library
+//        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+//            CharSequence name = getString(R.string.channel_name);
+//            String description = getString(R.string.channel_description);
+//            int importance = NotificationManager.IMPORTANCE_DEFAULT;
+//            NotificationChannel channel = new NotificationChannel(CHANNEL_ID, name, importance);
+//            channel.setDescription(description);
+//            // Register the channel with the system; you can't change the importance
+//            // or other notification behaviors after this
+//            NotificationManager notificationManager = getSystemService(NotificationManager.class);
+//            notificationManager.createNotificationChannel(channel);
+//        }
+        //NotificationManagerCompat notificationManager = NotificationManagerCompat.from(this);
+        //
+        //// notificationId is a unique int for each notification that you must define
+        //notificationManager.notify(notificationId, mBuilder.build());
+//    }
 }
