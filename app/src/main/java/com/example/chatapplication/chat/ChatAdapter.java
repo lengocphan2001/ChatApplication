@@ -58,11 +58,11 @@ public class ChatAdapter extends RecyclerView.Adapter<ChatAdapter.MyHolder>{
         String message = modelChatList.get(position).getMessage();
         String time = modelChatList.get(position).getTime();
         String timeStamp = modelChatList.get(position).getTime();
-//        Calendar calendar = Calendar.getInstance();
-//        String dateFormat = "dd-MM-yyyy hh:mm";
-//        @SuppressLint("SimpleDateFormat") SimpleDateFormat simpleDateFormat = new SimpleDateFormat(dateFormat);
-//        calendar.setTimeInMillis(Long.parseLong(time));
-//        timeStamp = simpleDateFormat.format(calendar.getTime());
+        Calendar calendar = Calendar.getInstance();
+        String dateFormat = "dd-MM-yyyy hh:mm";
+        @SuppressLint("SimpleDateFormat") SimpleDateFormat simpleDateFormat = new SimpleDateFormat(dateFormat);
+        calendar.setTimeInMillis(Long.parseLong(time));
+        timeStamp = simpleDateFormat.format(calendar.getTime());
         holder.message.setText(message);
         holder.time.setText(timeStamp);
         try{

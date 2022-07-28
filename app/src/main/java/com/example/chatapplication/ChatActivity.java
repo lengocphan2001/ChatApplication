@@ -32,6 +32,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.HashMap;
+import java.util.Objects;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 
@@ -160,7 +161,7 @@ public class ChatActivity extends AppCompatActivity {
                 }
 //                Collections.sort(messagesListLists, new Comparator<MessagesList>(){
 //                    public int compare(MessagesList s1, MessagesList s2) {
-//                        if (s1 != null && s2 != null)
+//                        if (!s1.getTime().isEmpty() && !s2.getTime().isEmpty())
 //                            return s1.getTime().compareToIgnoreCase(s2.getTime());
 //                        else return -1;
 //                    }
